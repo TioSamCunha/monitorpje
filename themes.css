@@ -1,0 +1,834 @@
+/*
+ * themes.css — Temas alternativos para o Monitor Processual PJe
+ *
+ * Uso: adicionar APÓS style.css no index.html
+ *   <link rel="stylesheet" href="themes.css">
+ *   <script src="js/00-themes.js"></script>
+ *
+ * Troca em runtime:
+ *   document.documentElement.setAttribute('data-theme', 'cnj')
+ *   document.documentElement.setAttribute('data-theme', 'juridico')
+ *   document.documentElement.setAttribute('data-theme', 'peticao')
+ *   document.documentElement.removeAttribute('data-theme')   // volta ao padrão escuro
+ *
+ * Todos os seletores sobrescrevem apenas as variáveis :root —
+ * nenhuma regra de layout ou componente precisa ser duplicada.
+ * ─────────────────────────────────────────────────────────────
+ */
+
+/* ══════════════════════════════════════════
+   FIX GLOBAL — botões .ib (layout, exportar, etc.)
+   Garante visibilidade em todos os temas.
+   O tema escuro usa --bg3 (#1c1d27) como fundo,
+   o que às vezes some contra o fundo da topbar.
+   Forçamos border visível e cor de ícone clara.
+   ══════════════════════════════════════════ */
+:root:not([data-theme]) .ib {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+:root:not([data-theme]) .ib:hover {
+  border-color: rgba(255,255,255,.3);
+  color: var(--text);
+  background: rgba(255,255,255,.06);
+}
+/* Botão ativo / selecionado no tema escuro */
+:root:not([data-theme]) .ib.active,
+:root:not([data-theme]) .ib[data-active="true"] {
+  background: rgba(79,142,247,.15);
+  border-color: rgba(79,142,247,.4);
+  color: var(--accent);
+}
+
+/* ══════════════════════════════════════════
+   TEMA CNJ
+   Baseado na identidade visual do Conselho
+   Nacional de Justiça:
+   • Fundo branco / cinza claríssimo
+   • Azul institucional #003580 como accent
+   • Verde-azulado #007A72 como accent2
+   • Tipografia sóbria, alta legibilidade
+   ══════════════════════════════════════════ */
+[data-theme="cnj"] {
+  /* Fundos */
+  --bg:   #f2f4f8;
+  --bg2:  #ffffff;
+  --bg3:  #eaf0f7;
+
+  /* Bordas */
+  --border:  rgba(0, 53, 128, .12);
+  --border2: rgba(0, 53, 128, .25);
+
+  /* Texto */
+  --text:  #0d1b2e;
+  --text2: #3a4d6b;
+  --text3: #7a8fa8;
+
+  /* Accent — azul CNJ + verde-azulado */
+  --accent:  #003580;
+  --accent2: #007A72;
+
+  /* Status */
+  --green:  #007A72;
+  --amber:  #B45309;
+  --red:    #C0392B;
+  --purple: #5B4397;
+
+  /* Tipografia e raios — mantém os mesmos */
+  --mono: 'DM Mono', monospace;
+  --sans: 'Sora', sans-serif;
+  --r:  8px;
+  --r2: 12px;
+}
+
+/* Ajustes pontuais CNJ: componentes que usam
+   cores hardcoded (não variáveis) precisam de override */
+
+/* Logo gradient */
+[data-theme="cnj"] .logo-icon,
+[data-theme="cnj"] .auth-logo,
+[data-theme="cnj"] .user-avatar-initials {
+  background: linear-gradient(135deg, #003580, #007A72);
+}
+
+/* Run button */
+[data-theme="cnj"] .run-btn {
+  background: #003580;
+}
+[data-theme="cnj"] .run-btn:hover:not(:disabled) {
+  background: #002060;
+}
+
+/* Chips de busca */
+[data-theme="cnj"] .chip {
+  background: rgba(0, 53, 128, .08);
+  border-color: rgba(0, 53, 128, .2);
+  color: #003580;
+}
+[data-theme="cnj"] .chip-x { color: rgba(0, 53, 128, .35); }
+[data-theme="cnj"] .chip-x:hover { color: #003580; }
+
+/* Badges result cards */
+[data-theme="cnj"] .b-org {
+  background: rgba(0, 53, 128, .08);
+  color: #003580;
+  border-color: rgba(0, 53, 128, .18);
+}
+[data-theme="cnj"] .b-tipo {
+  background: rgba(0, 122, 114, .08);
+  color: #006860;
+  border-color: rgba(0, 122, 114, .18);
+}
+[data-theme="cnj"] .b-src {
+  background: rgba(180, 83, 9, .08);
+  color: #9A4500;
+  border-color: rgba(180, 83, 9, .18);
+}
+
+/* Tab ativa */
+[data-theme="cnj"] .tab.active,
+[data-theme="cnj"] .ltab.active { color: #003580; border-bottom-color: #003580; }
+
+/* Scrollbar mais discreta no tema claro */
+[data-theme="cnj"] ::-webkit-scrollbar-track { background: #eaf0f7; }
+[data-theme="cnj"] ::-webkit-scrollbar-thumb { background: rgba(0,53,128,.2); }
+
+/* Auth card sombra mais suave */
+[data-theme="cnj"] .auth-card {
+  box-shadow: 0 8px 32px rgba(0, 53, 128, .12);
+}
+
+/* Botão Google */
+[data-theme="cnj"] .google-btn:hover {
+  border-color: #003580;
+  color: #003580;
+}
+
+/* Freq chip selecionado */
+[data-theme="cnj"] .freq-chip.sel {
+  background: rgba(0, 53, 128, .1);
+  border-color: rgba(0, 53, 128, .35);
+  color: #003580;
+}
+
+/* Task run */
+[data-theme="cnj"] .task-run-btn { background: #003580; }
+[data-theme="cnj"] .task-run-btn:hover { background: #002060; }
+[data-theme="cnj"] .task-toggle.on { background: #003580; }
+
+/* Modal primary btn */
+[data-theme="cnj"] .macts .btn.p {
+  background: #003580;
+  border-color: #003580;
+}
+
+/* Cert btn */
+[data-theme="cnj"] .cert-btn {
+  background: rgba(0, 53, 128, .07);
+  border-color: rgba(0, 53, 128, .25);
+  color: #003580;
+}
+[data-theme="cnj"] .cert-btn:hover {
+  background: rgba(0, 53, 128, .14);
+  border-color: rgba(0, 53, 128, .4);
+  color: #002060;
+}
+
+/* pf-tag active */
+[data-theme="cnj"] .pf-tag-active {
+  background: rgba(0, 53, 128, .1);
+  border-color: rgba(0, 53, 128, .3);
+  color: #003580;
+}
+
+/* emailjs banner */
+[data-theme="cnj"] .emailjs-banner {
+  background: rgba(0, 53, 128, .04);
+  border-color: rgba(0, 53, 128, .18);
+}
+[data-theme="cnj"] .emailjs-banner a { color: #003580; }
+
+/* role badges */
+[data-theme="cnj"] .role-admin {
+  background: rgba(0, 53, 128, .08);
+  color: #003580;
+  border-color: rgba(0, 53, 128, .2);
+}
+[data-theme="cnj"] .role-superadmin {
+  background: rgba(180, 83, 9, .08);
+  color: #9A4500;
+  border-color: rgba(180, 83, 9, .2);
+}
+
+/* tpill */
+[data-theme="cnj"] .tpill {
+  background: rgba(0, 53, 128, .08);
+  color: #003580;
+  border-color: rgba(0, 53, 128, .18);
+}
+[data-theme="cnj"] .tpill:hover { background: rgba(0, 53, 128, .15); }
+
+/* tbadge */
+[data-theme="cnj"] .tbadge {
+  background: rgba(0, 53, 128, .1);
+  color: #003580;
+}
+
+
+/* ══════════════════════════════════════════
+   TEMA JURÍDICO
+   Baseado no esquema da impugnação / peças
+   processuais do PJe/TRF-1:
+   • Fundo creme / papel envelhecido
+   • Cabeçalho azul-marinho com texto branco
+   • Accent vermelho-bordô para ações
+   • Fontes serif-like para teor
+   ══════════════════════════════════════════ */
+[data-theme="juridico"] {
+  /* Fundos */
+  --bg:  #f5f0e8;
+  --bg2: #faf7f2;
+  --bg3: #eee8da;
+
+  /* Bordas */
+  --border:  rgba(80, 60, 20, .15);
+  --border2: rgba(80, 60, 20, .28);
+
+  /* Texto */
+  --text:  #1a1410;
+  --text2: #3d2f1f;
+  --text3: #8a7560;
+
+  /* Accent — bordô/vermelho jurídico + azul-marinho */
+  --accent:  #8B1A1A;
+  --accent2: #1A3A6B;
+
+  /* Status */
+  --green:  #2D6A4F;
+  --amber:  #B45309;
+  --red:    #8B1A1A;
+  --purple: #4A3272;
+
+  --mono: 'DM Mono', monospace;
+  --sans: 'Sora', sans-serif;
+  --r:  6px;
+  --r2: 10px;
+}
+
+/* Ajustes pontuais Jurídico */
+
+/* Logo / gradients */
+[data-theme="juridico"] .logo-icon,
+[data-theme="juridico"] .auth-logo,
+[data-theme="juridico"] .user-avatar-initials {
+  background: linear-gradient(135deg, #8B1A1A, #1A3A6B);
+}
+
+/* Run button */
+[data-theme="juridico"] .run-btn { background: #8B1A1A; }
+[data-theme="juridico"] .run-btn:hover:not(:disabled) { background: #6e1515; }
+
+/* Chips */
+[data-theme="juridico"] .chip {
+  background: rgba(139, 26, 26, .08);
+  border-color: rgba(139, 26, 26, .2);
+  color: #8B1A1A;
+}
+[data-theme="juridico"] .chip-x { color: rgba(139, 26, 26, .35); }
+[data-theme="juridico"] .chip-x:hover { color: #8B1A1A; }
+
+/* Badges */
+[data-theme="juridico"] .b-org {
+  background: rgba(26, 58, 107, .08);
+  color: #1A3A6B;
+  border-color: rgba(26, 58, 107, .18);
+}
+[data-theme="juridico"] .b-tipo {
+  background: rgba(45, 106, 79, .08);
+  color: #1e5c3a;
+  border-color: rgba(45, 106, 79, .18);
+}
+[data-theme="juridico"] .b-src {
+  background: rgba(139, 26, 26, .08);
+  color: #7a1515;
+  border-color: rgba(139, 26, 26, .18);
+}
+
+/* Abas ativas */
+[data-theme="juridico"] .tab.active,
+[data-theme="juridico"] .ltab.active {
+  color: #8B1A1A;
+  border-bottom-color: #8B1A1A;
+}
+
+/* Scrollbar papel */
+[data-theme="juridico"] ::-webkit-scrollbar-track { background: #eee8da; }
+[data-theme="juridico"] ::-webkit-scrollbar-thumb { background: rgba(139,26,26,.25); }
+
+/* Auth card */
+[data-theme="juridico"] .auth-card {
+  box-shadow: 0 8px 32px rgba(80, 60, 20, .18);
+  border-color: rgba(139, 26, 26, .2);
+}
+
+/* Google btn */
+[data-theme="juridico"] .google-btn:hover {
+  border-color: #8B1A1A;
+  color: #8B1A1A;
+}
+
+/* Freq chip */
+[data-theme="juridico"] .freq-chip.sel {
+  background: rgba(139, 26, 26, .1);
+  border-color: rgba(139, 26, 26, .35);
+  color: #8B1A1A;
+}
+
+/* Task */
+[data-theme="juridico"] .task-run-btn { background: #8B1A1A; }
+[data-theme="juridico"] .task-run-btn:hover { background: #6e1515; }
+[data-theme="juridico"] .task-toggle.on { background: #8B1A1A; }
+
+/* Modal primary btn */
+[data-theme="juridico"] .macts .btn.p {
+  background: #8B1A1A;
+  border-color: #8B1A1A;
+}
+
+/* Cert btn */
+[data-theme="juridico"] .cert-btn {
+  background: rgba(26, 58, 107, .07);
+  border-color: rgba(26, 58, 107, .25);
+  color: #1A3A6B;
+}
+[data-theme="juridico"] .cert-btn:hover {
+  background: rgba(26, 58, 107, .14);
+  border-color: rgba(26, 58, 107, .4);
+  color: #12295a;
+}
+
+/* pf-tag active */
+[data-theme="juridico"] .pf-tag-active {
+  background: rgba(139, 26, 26, .1);
+  border-color: rgba(139, 26, 26, .3);
+  color: #8B1A1A;
+}
+
+/* emailjs banner */
+[data-theme="juridico"] .emailjs-banner {
+  background: rgba(26, 58, 107, .04);
+  border-color: rgba(26, 58, 107, .18);
+}
+[data-theme="juridico"] .emailjs-banner a { color: #1A3A6B; }
+
+/* role badges */
+[data-theme="juridico"] .role-admin {
+  background: rgba(139, 26, 26, .08);
+  color: #8B1A1A;
+  border-color: rgba(139, 26, 26, .2);
+}
+[data-theme="juridico"] .role-superadmin {
+  background: rgba(180, 83, 9, .08);
+  color: #9A4500;
+  border-color: rgba(180, 83, 9, .2);
+}
+
+/* tpill */
+[data-theme="juridico"] .tpill {
+  background: rgba(139, 26, 26, .08);
+  color: #8B1A1A;
+  border-color: rgba(139, 26, 26, .18);
+}
+[data-theme="juridico"] .tpill:hover { background: rgba(139, 26, 26, .15); }
+
+/* tbadge */
+[data-theme="juridico"] .tbadge {
+  background: rgba(139, 26, 26, .1);
+  color: #8B1A1A;
+}
+
+/* Teor do processo — serif para maior legibilidade em peças */
+[data-theme="juridico"] .teor-body {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #2a1e10;
+}
+
+/* pub-num em jurídico fica marinho em vez de vermelho */
+[data-theme="juridico"] .pub-num,
+[data-theme="juridico"] .rc-num { color: #1A3A6B; }
+
+
+/* ══════════════════════════════════════════
+   TEMA MENDES
+   Identidade visual do escritório
+   Mendes Advocacia & Consultoria:
+   • Fundo branco / cinza muito claro
+   • Laranja vibrante #E05A1B como accent
+   • Cinza-chumbo #2D3138 como accent2/texto
+   • Linha decorativa laranja no topo da topbar
+   ══════════════════════════════════════════ */
+[data-theme="mendes"] {
+  --bg:  #f5f5f5;
+  --bg2: #ffffff;
+  --bg3: #ebebeb;
+
+  --border:  rgba(45, 49, 56, .12);
+  --border2: rgba(45, 49, 56, .22);
+
+  --text:  #1a1c20;
+  --text2: #3a3d45;
+  --text3: #8a8d96;
+
+  --accent:  #E05A1B;
+  --accent2: #2D3138;
+
+  --green:  #1e7d45;
+  --amber:  #c47b00;
+  --red:    #c0392b;
+  --purple: #5b4397;
+
+  --mono: 'DM Mono', monospace;
+  --sans: 'Sora', sans-serif;
+  --r:  7px;
+  --r2: 11px;
+}
+
+/* Barra laranja no topo da topbar */
+[data-theme="mendes"] .topbar {
+  border-top: 3px solid #E05A1B;
+  border-bottom: 1px solid rgba(45,49,56,.12);
+}
+
+/* Logo */
+[data-theme="mendes"] .logo-icon,
+[data-theme="mendes"] .auth-logo,
+[data-theme="mendes"] .user-avatar-initials {
+  background: linear-gradient(135deg, #E05A1B, #2D3138);
+}
+
+/* Run button */
+[data-theme="mendes"] .run-btn { background: #E05A1B; }
+[data-theme="mendes"] .run-btn:hover:not(:disabled) { background: #c44e16; }
+
+/* Chips */
+[data-theme="mendes"] .chip {
+  background: rgba(224, 90, 27, .08);
+  border-color: rgba(224, 90, 27, .2);
+  color: #E05A1B;
+}
+[data-theme="mendes"] .chip-x { color: rgba(224,90,27,.35); }
+[data-theme="mendes"] .chip-x:hover { color: #E05A1B; }
+
+/* Badges */
+[data-theme="mendes"] .b-org {
+  background: rgba(45, 49, 56, .07);
+  color: #2D3138;
+  border-color: rgba(45, 49, 56, .16);
+}
+[data-theme="mendes"] .b-tipo {
+  background: rgba(30, 125, 69, .07);
+  color: #1e5c35;
+  border-color: rgba(30, 125, 69, .16);
+}
+[data-theme="mendes"] .b-src {
+  background: rgba(224, 90, 27, .07);
+  color: #b34a12;
+  border-color: rgba(224, 90, 27, .16);
+}
+
+/* Abas ativas */
+[data-theme="mendes"] .tab.active,
+[data-theme="mendes"] .ltab.active {
+  color: #E05A1B;
+  border-bottom-color: #E05A1B;
+}
+
+/* Scrollbar */
+[data-theme="mendes"] ::-webkit-scrollbar-track { background: #ebebeb; }
+[data-theme="mendes"] ::-webkit-scrollbar-thumb { background: rgba(224,90,27,.22); }
+
+/* Auth card */
+[data-theme="mendes"] .auth-card {
+  box-shadow: 0 6px 28px rgba(224, 90, 27, .12);
+  border-top: 3px solid #E05A1B;
+}
+
+/* Google btn */
+[data-theme="mendes"] .google-btn:hover {
+  border-color: #E05A1B;
+  color: #E05A1B;
+}
+
+/* Freq chip */
+[data-theme="mendes"] .freq-chip.sel {
+  background: rgba(224, 90, 27, .1);
+  border-color: rgba(224, 90, 27, .35);
+  color: #E05A1B;
+}
+
+/* Task */
+[data-theme="mendes"] .task-run-btn { background: #E05A1B; }
+[data-theme="mendes"] .task-run-btn:hover { background: #c44e16; }
+[data-theme="mendes"] .task-toggle.on { background: #E05A1B; }
+
+/* Modal primary */
+[data-theme="mendes"] .macts .btn.p {
+  background: #E05A1B;
+  border-color: #E05A1B;
+}
+
+/* Cert btn */
+[data-theme="mendes"] .cert-btn {
+  background: rgba(224, 90, 27, .07);
+  border-color: rgba(224, 90, 27, .25);
+  color: #b34a12;
+}
+[data-theme="mendes"] .cert-btn:hover {
+  background: rgba(224, 90, 27, .14);
+  border-color: rgba(224, 90, 27, .4);
+  color: #8a3a0e;
+}
+
+/* pf-tag active */
+[data-theme="mendes"] .pf-tag-active {
+  background: rgba(224, 90, 27, .1);
+  border-color: rgba(224, 90, 27, .3);
+  color: #E05A1B;
+}
+
+/* emailjs banner */
+[data-theme="mendes"] .emailjs-banner {
+  background: rgba(224, 90, 27, .04);
+  border-color: rgba(224, 90, 27, .18);
+}
+[data-theme="mendes"] .emailjs-banner a { color: #E05A1B; }
+
+/* role badges */
+[data-theme="mendes"] .role-admin {
+  background: rgba(224, 90, 27, .08);
+  color: #E05A1B;
+  border-color: rgba(224, 90, 27, .2);
+}
+[data-theme="mendes"] .role-superadmin {
+  background: rgba(196, 123, 0, .08);
+  color: #8a5800;
+  border-color: rgba(196, 123, 0, .2);
+}
+
+/* tpill */
+[data-theme="mendes"] .tpill {
+  background: rgba(224, 90, 27, .08);
+  color: #E05A1B;
+  border-color: rgba(224, 90, 27, .18);
+}
+[data-theme="mendes"] .tpill:hover { background: rgba(224, 90, 27, .15); }
+
+/* tbadge */
+[data-theme="mendes"] .tbadge {
+  background: rgba(224, 90, 27, .1);
+  color: #E05A1B;
+}
+
+/* pub-num / rc-num */
+[data-theme="mendes"] .pub-num,
+[data-theme="mendes"] .rc-num { color: #E05A1B; }
+
+/* Links */
+[data-theme="mendes"] .pfl-val.lnk,
+[data-theme="mendes"] .teor-lnk { color: #E05A1B; }
+[data-theme="mendes"] .pfl-val.lnk:hover,
+[data-theme="mendes"] .teor-lnk:hover { color: #c44e16; }
+
+
+/* ══════════════════════════════════════════
+   FIX 3 — Botões expandir/contrair (.ib)
+   Em temas claros os botões ficam com
+   background genérico; ajustar para todos.
+   ══════════════════════════════════════════ */
+[data-theme="cnj"] .ib,
+[data-theme="juridico"] .ib,
+[data-theme="peticao"] .ib,
+[data-theme="mendes"] .ib {
+  background: var(--bg3);
+  border-color: var(--border2);
+  color: var(--text2);
+}
+[data-theme="cnj"] .ib:hover,
+[data-theme="juridico"] .ib:hover,
+[data-theme="peticao"] .ib:hover,
+[data-theme="mendes"] .ib:hover { color: var(--text); border-color: var(--text3); }
+
+[data-theme="cnj"] .ib.green,
+[data-theme="juridico"] .ib.green,
+[data-theme="peticao"] .ib.green,
+[data-theme="mendes"] .ib.green {
+  background: rgba(var(--green), .08);
+  border-color: rgba(var(--green), .22);
+  color: var(--green);
+}
+/* versão simplificada que funciona sem color() */
+[data-theme="mendes"] .ib.green {
+  background: rgba(30,125,69,.08);
+  border-color: rgba(30,125,69,.22);
+  color: #1e7d45;
+}
+[data-theme="cnj"] .ib.green {
+  background: rgba(0,122,114,.08);
+  border-color: rgba(0,122,114,.22);
+  color: #007A72;
+}
+[data-theme="juridico"] .ib.green,
+[data-theme="peticao"] .ib.green {
+  background: rgba(45,106,79,.08);
+  border-color: rgba(45,106,79,.22);
+  color: #1e5c3a;
+}
+[data-theme="mendes"] .ib.amber {
+  background: rgba(196,123,0,.08);
+  border-color: rgba(196,123,0,.22);
+  color: #c47b00;
+}
+[data-theme="cnj"] .ib.amber,
+[data-theme="juridico"] .ib.amber,
+[data-theme="peticao"] .ib.amber {
+  background: rgba(180,83,9,.08);
+  border-color: rgba(180,83,9,.22);
+  color: #9A4500;
+}
+
+
+/* ══════════════════════════════════════════
+   TEMA PETIÇÃO
+   Inspirado nas peças processuais do escritório
+   (Embargos à Execução, Manifestações ao TRF-1):
+   • Fundo branco neve / off-white
+   • Cabeçalho e accent em azul-marinho escuro #0F2545
+   • Accent2 em dourado-âmbar #8A6A00 (citações em destaque)
+   • Texto em preto-tinta #111111
+   • Serif no teor (leitura de peças densas)
+   • Bordas discretas, estética de documento formal
+   ══════════════════════════════════════════ */
+[data-theme="peticao"] {
+  /* Fundos */
+  --bg:  #f8f8f6;
+  --bg2: #ffffff;
+  --bg3: #f0eff0;
+
+  /* Bordas */
+  --border:  rgba(15, 37, 69, .11);
+  --border2: rgba(15, 37, 69, .22);
+
+  /* Texto */
+  --text:  #111111;
+  --text2: #2c3e50;
+  --text3: #7f8c8d;
+
+  /* Accent — azul-marinho + dourado */
+  --accent:  #0F2545;
+  --accent2: #8A6A00;
+
+  /* Status */
+  --green:  #1a6b3a;
+  --amber:  #8A6A00;
+  --red:    #7B1414;
+  --purple: #3D2B6B;
+
+  --mono: 'DM Mono', monospace;
+  --sans: 'Sora', sans-serif;
+  --r:  5px;
+  --r2: 8px;
+}
+
+/* ── Ajustes pontuais Petição ── */
+
+/* Logo / gradients */
+[data-theme="peticao"] .logo-icon,
+[data-theme="peticao"] .auth-logo,
+[data-theme="peticao"] .user-avatar-initials {
+  background: linear-gradient(135deg, #0F2545, #8A6A00);
+}
+
+/* Run button */
+[data-theme="peticao"] .run-btn { background: #0F2545; }
+[data-theme="peticao"] .run-btn:hover:not(:disabled) { background: #0a1a32; }
+
+/* Chips */
+[data-theme="peticao"] .chip {
+  background: rgba(15, 37, 69, .07);
+  border-color: rgba(15, 37, 69, .18);
+  color: #0F2545;
+}
+[data-theme="peticao"] .chip-x { color: rgba(15, 37, 69, .3); }
+[data-theme="peticao"] .chip-x:hover { color: #0F2545; }
+
+/* Badges */
+[data-theme="peticao"] .b-org {
+  background: rgba(15, 37, 69, .07);
+  color: #0F2545;
+  border-color: rgba(15, 37, 69, .16);
+}
+[data-theme="peticao"] .b-tipo {
+  background: rgba(26, 107, 58, .07);
+  color: #145c30;
+  border-color: rgba(26, 107, 58, .16);
+}
+[data-theme="peticao"] .b-src {
+  background: rgba(138, 106, 0, .07);
+  color: #6b5200;
+  border-color: rgba(138, 106, 0, .16);
+}
+
+/* Abas ativas */
+[data-theme="peticao"] .tab.active,
+[data-theme="peticao"] .ltab.active {
+  color: #0F2545;
+  border-bottom-color: #0F2545;
+}
+
+/* Scrollbar */
+[data-theme="peticao"] ::-webkit-scrollbar-track { background: #f0eff0; }
+[data-theme="peticao"] ::-webkit-scrollbar-thumb { background: rgba(15,37,69,.18); }
+
+/* Auth card */
+[data-theme="peticao"] .auth-card {
+  box-shadow: 0 6px 28px rgba(15, 37, 69, .12);
+  border-color: rgba(15, 37, 69, .18);
+}
+
+/* Google btn */
+[data-theme="peticao"] .google-btn:hover {
+  border-color: #0F2545;
+  color: #0F2545;
+}
+
+/* Freq chip sel */
+[data-theme="peticao"] .freq-chip.sel {
+  background: rgba(15, 37, 69, .08);
+  border-color: rgba(15, 37, 69, .32);
+  color: #0F2545;
+}
+
+/* Task */
+[data-theme="peticao"] .task-run-btn { background: #0F2545; }
+[data-theme="peticao"] .task-run-btn:hover { background: #0a1a32; }
+[data-theme="peticao"] .task-toggle.on { background: #0F2545; }
+
+/* Modal primary */
+[data-theme="peticao"] .macts .btn.p {
+  background: #0F2545;
+  border-color: #0F2545;
+}
+
+/* Cert btn — destaque dourado (referências, certidões) */
+[data-theme="peticao"] .cert-btn {
+  background: rgba(138, 106, 0, .07);
+  border-color: rgba(138, 106, 0, .28);
+  color: #6b5200;
+}
+[data-theme="peticao"] .cert-btn:hover {
+  background: rgba(138, 106, 0, .14);
+  border-color: rgba(138, 106, 0, .45);
+  color: #4a3900;
+}
+
+/* pf-tag active */
+[data-theme="peticao"] .pf-tag-active {
+  background: rgba(15, 37, 69, .08);
+  border-color: rgba(15, 37, 69, .28);
+  color: #0F2545;
+}
+
+/* emailjs banner */
+[data-theme="peticao"] .emailjs-banner {
+  background: rgba(15, 37, 69, .04);
+  border-color: rgba(15, 37, 69, .16);
+}
+[data-theme="peticao"] .emailjs-banner a { color: #0F2545; }
+
+/* role badges */
+[data-theme="peticao"] .role-admin {
+  background: rgba(15, 37, 69, .07);
+  color: #0F2545;
+  border-color: rgba(15, 37, 69, .18);
+}
+[data-theme="peticao"] .role-superadmin {
+  background: rgba(138, 106, 0, .08);
+  color: #6b5200;
+  border-color: rgba(138, 106, 0, .2);
+}
+
+/* tpill */
+[data-theme="peticao"] .tpill {
+  background: rgba(15, 37, 69, .07);
+  color: #0F2545;
+  border-color: rgba(15, 37, 69, .16);
+}
+[data-theme="peticao"] .tpill:hover { background: rgba(15, 37, 69, .13); }
+
+/* tbadge */
+[data-theme="peticao"] .tbadge {
+  background: rgba(15, 37, 69, .08);
+  color: #0F2545;
+}
+
+/* Teor — serif, exatamente como numa peça processual impressa */
+[data-theme="peticao"] .teor-body {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: #111111;
+  letter-spacing: .01em;
+}
+
+/* Número do processo em marinho */
+[data-theme="peticao"] .pub-num,
+[data-theme="peticao"] .rc-num { color: #0F2545; }
+
+/* Destaque dourado nos links de certidão/teor */
+[data-theme="peticao"] .pfl-val.lnk,
+[data-theme="peticao"] .teor-lnk { color: #8A6A00; }
+[data-theme="peticao"] .pfl-val.lnk:hover,
+[data-theme="peticao"] .teor-lnk:hover { color: #4a3900; }

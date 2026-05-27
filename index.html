@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Monitor Processual PJe</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="themes.css">
+</head>
+<body>
+<div class="app" id="mainApp" style="display:none">
+
+  <!-- ══ PAINEL ESQUERDO ══ -->
+  <div class="left">
+    <div class="left-logo">
+      <div class="logo-icon">⚖️</div>
+      <div>
+        <div class="logo-name">Monitor PJe</div>
+        <div class="logo-api">comunicaapi.pje.jus.br</div>
+      </div>
+    </div>
+
+    <!-- Tabs: Parâmetros / Advogados / Tags / Favoritos -->
+    <div class="ltabs">
+      <div class="ltab active" id="ltab-params" onclick="switchLTab('params')">Parâmetros</div>
+      <div class="ltab"        id="ltab-advs"   onclick="switchLTab('advs')">Advogados</div>
+      <div class="ltab"        id="ltab-tags"   onclick="switchLTab('tags')">🏷️ Tags</div>
+      <div class="ltab"        id="ltab-favs"   onclick="switchLTab('favs')">⭐ Favs</div>
+    </div>
+
+    <!-- Parâmetros -->
+    <div class="left-body" id="lpanel-params">
+      <div id="params-body"></div>
+    </div>
+
+    <!-- Advogados -->
+    <div class="left-body" id="lpanel-advs" style="display:none">
+      <div id="advs-inner" style="padding:4px 0"></div>
+    </div>
+
+    <!-- Tags salvas -->
+    <div class="left-body" id="lpanel-tags" style="display:none">
+      <div style="padding:6px 8px 0;font-size:10px;color:var(--text2);line-height:1.5">
+        Tags globais do escritório. <b style="color:var(--accent)">▶</b> pesquisa · <b style="color:var(--accent)">✏</b> edita · <b style="color:var(--accent)">✕</b> exclui.
+      </div>
+      <div id="saved-tags-list" style="margin-top:4px"></div>
+    </div>
+
+    <!-- Favoritos -->
+    <div class="left-body" id="lpanel-favs" style="display:none">
+      <div id="favs-inner"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="left-footer">
+      <button class="ib amber" id="btnDoc" onclick="exportDoc()" disabled title="DOC">📄</button>
+      <button class="ib green" id="btnCsv" onclick="exportCSV()" disabled title="CSV">📊</button>
+      <button class="run-btn" id="runBtn" onclick="runSearch()">▶ Pesquisar</button>
+      <button class="stop-btn" id="stopBtn" onclick="stopSearch()">⏹ Parar</button>
+      <button class="ib" id="lb-adv-add" onclick="openNewAdv()" style="display:none" title="Novo advogado">+</button>
+    </div>
+  </div>
+
+  <!-- ══ PAINEL DIREITO ══ -->
+  <div class="main">
+    <div class="topbar">
+      <span class="top-title">Monitor Processual PJe</span>
+      <div class="top-spacer"></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="tab-results"   onclick="switchRTab('results')">Publicações <span class="tbadge" id="resBadge">0</span></div>
+      <div class="tab"        id="tab-progress"  onclick="switchRTab('progress')">Progresso <span class="tbadge" id="progBadge">—</span></div>
+      <div class="tab"        id="tab-favorites" onclick="switchRTab('favorites');renderFavsPanel()">⭐ Favoritos <span class="tbadge" id="favBadge"></span></div>
+      <div class="tab"        id="tab-monitor"   onclick="switchRTab('monitor');renderMonitorPanel()">🔔 Monitorados <span class="tbadge" id="monitorBadge"></span></div>
+      <div class="tab"        id="tab-users"     onclick="switchRTab('users');renderUsersPanel()" style="display:none">👥 Usuários</div>
+      <div class="tab"        id="tab-tasks"     onclick="switchRTab('tasks');renderTasksPanel()">📅 Tarefas <span class="tbadge" id="tasksBadge"></span></div>
+    </div>
+
+    <!-- Barra de filtros pós-pesquisa -->
+    <div id="postFilterBar"></div>
+
+    <div class="panel show" id="panel-results">   <div id="resultsContent" ><div class="empty"><div class="ei">🔍</div><div class="et">Clique em Pesquisar para buscar</div></div></div></div>
+
+    <div class="panel"      id="panel-progress">  <div id="progressContent"><div class="empty"><div class="ei">⏳</div><div class="et">Nenhuma busca em andamento</div></div></div></div>
+    <div class="panel"      id="panel-favorites"> <div id="favoritesContent"><div class="empty"><div class="ei">⭐</div><div class="et">Nenhum favorito</div></div></div></div>
+    <div class="panel"      id="panel-monitor">   <div id="monitorContent"><div class="empty"><div class="ei">🔔</div><div class="et">Nenhum processo monitorado</div></div></div></div>
+    <div class="panel"      id="panel-users">     <div id="usersContent"><div class="empty"><div class="ei">👥</div><div class="et">Carregando…</div></div></div></div>
+    <div class="panel"      id="panel-tasks">    <div id="tasksContent"><div class="empty"><div class="ei">📅</div><div class="et">Nenhuma tarefa agendada</div></div></div></div>
+
+    <div class="statusbar">
+      <div class="sdot" id="sdot"></div>
+      <span class="stxt" id="stxt">pronto · /comunicacao → /certidao/{hash} · datas em dd.mm.aaaa</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="mBg" style="display:none" onclick="closeModalIf(event)">
+  <div class="modal" id="mBox"></div>
+</div>
+
+<!-- Modal 2 para tags -->
+<div class="modal-bg" id="mBg2" style="display:none" onclick="closeModal2If(event)">
+  <div class="modal" id="mBox2"></div>
+</div>
+
+<!-- ───────────── Scripts (ordem importa: escopo global compartilhado) ───────────── -->
+<script src="js/00-themes.js"></script>
+<script src="js/01-config-state.js"></script>
+<script src="js/02-search.js"></script>
+<script src="js/03-results.js"></script>
+<script src="js/04-tags-favorites.js"></script>
+<script src="js/05-auth.js"></script>
+<script src="js/06-email-tasks.js"></script>
+<script src="js/07-utils-adv.js"></script>
+</body>
+</html>
